@@ -4,7 +4,15 @@
     <img src="https://img.shields.io/badge/CCDS-Project%20template-328F97?logo=cookiecutter" />
 </a>
 
-A short description of the project.
+# Model reports 
+Sterring angle prediction - Nvidia's sterring model (reached 0.02 mse)
+Lane segmentation - VGG-Unet 
+Object detection - Yolo V11  
+
+# Demo images
+<img src="./demo_images/image1.png">
+<img src="./demo_images/image2.png">
+<img src="./demo_images/image3.png">
 
 ## Project Organization
 

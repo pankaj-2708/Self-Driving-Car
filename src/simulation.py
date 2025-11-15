@@ -33,7 +33,7 @@ def load_steering_model():
 
 def load_image():
     all_files=len(sorted(os.listdir(os.path.join("data","raw","07012018","data"))))
-    for i in range(all_files):
+    for i in range(all_files)[10000:]:
         file=f"{i}.jpg"
         print("Loading file ",file)
         img_path=os.path.join("data","raw","07012018","data",file)
@@ -53,6 +53,7 @@ def simulate_video_processing():
     # frame 1
     cv2.namedWindow("org_video")
     cv2.namedWindow("sterring")
+    # cv2.namedWindow("actual_sterring")
     cv2.namedWindow("object_detection")
     cv2.namedWindow("lane_detection")
     
@@ -96,14 +97,20 @@ def simulate_video_processing():
         img_str = img_str.astype(np.float32)
 
         sterring_rad=sterring_model.run([output_name_sterring],{input_name_sterring:img_str})[0][0][0]
-        sterring_deg=np.degrees(sterring_rad)
+        sterring_deg=sterring_rad*180/np.pi
         
         M=cv2.getRotationMatrix2D(center, sterring_deg, 1.0)
         new_sterring_wheel=cv2.warpAffine(streeing_wheel, M, (250, 250))
         cv2.imshow("sterring",new_sterring_wheel)
-        print("Actual sterring angle in degrees ",df[df['file_name']==f"{counter-1}.jpg"]['angle']*np.pi/180)
-        print("Time taken to predict steering angle is ",time.time()-start_time)
+        
+        # x=df[df['file_name']==f"{counter-1}.jpg"]['angle']
+        # M=cv2.getRotationMatrix2D(center, float(x), 1.0)
+        # new_sterring_wheel=cv2.warpAffine(streeing_wheel, M, (250, 250))
+        # cv2.imshow("actual_sterring",new_sterring_wheel)
+        
+        # print("Actual sterring angle in degrees ",x)
         print("Predicted steering angle in degrees ",sterring_deg)
+        print("Time taken to predict steering angle is ",time.time()-start_time)
         
         # object detection
         start_time=time.time()
